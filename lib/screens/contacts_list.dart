@@ -12,27 +12,33 @@ class ContactsList extends StatelessWidget {
         title: Text('Contacts'),
       ),
       body: FutureBuilder<List<Contact>>(
-        initialData: [],
-          future: Future.delayed(Duration(seconds: 1)).then((value) => findAll()),
+          initialData: [],
+          future: findAll(),
           builder: (context, snapshot) {
-              final contacts = (snapshot.data as List);
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final Contact contact = contacts[index];
-                  return _ContactItem(contact);
-                },
-                itemCount: contacts.length,
-              );
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  Text('Loading')
-                ],
-              ),
-            );
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                break;
+              case ConnectionState.waiting:
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [CircularProgressIndicator(), Text('Loading')],
+                  ),
+                );
+              case ConnectionState.active:
+                break;
+              case ConnectionState.done:
+                final contacts = (snapshot.data as List);
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final Contact contact = contacts[index];
+                    return _ContactItem(contact);
+                  },
+                  itemCount: contacts.length,
+                );
+            }
+            return Text('Unknown error');
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
