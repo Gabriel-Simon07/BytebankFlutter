@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/contact.dart';
 
+import '../database/app_database.dart';
+
 class ContactForm extends StatefulWidget {
 
   @override
@@ -48,7 +50,7 @@ class _ContactFormState extends State<ContactForm> {
 
                     if(fullName != null && accountNumber != null) {
                        final Contact newContact = Contact(0, fullName, accountNumber);
-                       Navigator.pop(context, newContact);
+                       save(newContact).then((id) => Navigator.pop(context, newContact));
                     }
                 },
                 ),
