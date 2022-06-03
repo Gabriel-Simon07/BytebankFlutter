@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/contacts_list.dart';
+import 'package:mobile/screens/transactions_list.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -34,13 +35,21 @@ class Dashboard extends StatelessWidget {
                   _FeatureItem(
                     'Transaction Feed',
                     Icons.description,
-                    onClick: () => print('is being implemeting'),
+                    onClick: () => _showTransactionsList(context),
                   ),
                 ],
               ),
             ),
 
         ],
+      ),
+    );
+  }
+
+  _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TransactionsList(),
       ),
     );
   }
